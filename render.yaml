@@ -1,0 +1,15 @@
+# One-click deploy to Render (https://render.com) — free tier.
+# In Render: New + → Blueprint → connect this repo. Render reads this file.
+services:
+  - type: web
+    name: ai-outreach-automation
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      # Optional — works without it (template generation). Add in the dashboard
+      # to enable fully AI-tailored copy.
+      - key: ANTHROPIC_API_KEY
+        sync: false
