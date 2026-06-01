@@ -27,7 +27,11 @@ It demonstrates the skill recruiters actually want from "AI builders" — **chai
 - 📧 **Email** / 💬 **WhatsApp** / 📱 **SMS** outreach (with copy buttons), and
 - a **live landing-page preview** in an iframe (open full page in a new tab).
 
-> _Add your screenshot/GIF (e.g. `docs/demo.gif`) and deployed URL._
+### Screenshots
+
+| Enter prospect details | Generated pitch + live landing page |
+| :---: | :---: |
+| ![Home screen](docs/01-home.png) | ![Outreach messages and landing-page preview](docs/02-result.png) |
 
 ---
 
