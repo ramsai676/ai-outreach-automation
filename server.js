@@ -66,7 +66,7 @@ app.post('/api/landing-page', async (req, res) => {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   app.listen(PORT, () => {
     console.log(`\n  ✉️  AI Outreach Automation on http://localhost:${PORT}`);
-    console.log(`      Generation: ${llmAvailable() ? 'ENABLED (Claude)' : 'fallback/template mode'}\n`);
+    console.log(`      Generation: ${llmAvailable() ? 'ENABLED (Gemini)' : 'fallback/template mode'}\n`);
   });
 }
 

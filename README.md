@@ -10,7 +10,7 @@ A tool that takes a prospect's business details and produces a complete outreach
 
 PitchCraft demonstrates chaining a content generator into a structured workflow with reliable output, rather than free-form chat. From a single input it produces three channel-specific messages and a full landing page.
 
-The generator returns structured data, and the landing page is rendered from a fixed, tested HTML template. This keeps the markup valid, escaped, and consistent regardless of the generated wording. It uses the Claude API when configured and falls back to a deterministic, category-aware template when no key is present, so it always produces output.
+The generator returns structured data, and the landing page is rendered from a fixed, tested HTML template. This keeps the markup valid, escaped, and consistent regardless of the generated wording. It uses the Gemini API when configured and falls back to a deterministic, category-aware template when no key is present, so it always produces output.
 
 ## Screenshots
 
@@ -28,7 +28,7 @@ npm start
 # open http://localhost:3004
 ```
 
-Enter a business name, category, city, and tone, then generate. You get email, WhatsApp, and SMS drafts with copy buttons, and a live landing-page preview. To enable fully tailored copy, copy `.env.example` to `.env` and add an `ANTHROPIC_API_KEY`.
+Enter a business name, category, city, and tone, then generate. You get email, WhatsApp, and SMS drafts with copy buttons, and a live landing-page preview. To enable fully tailored copy, copy `.env.example` to `.env` and add a `GEMINI_API_KEY`.
 
 Run the tests:
 
@@ -65,7 +65,7 @@ Generating structured content and rendering through a fixed template, rather tha
 - Server-side HTML templating for the landing page (escaped and self-contained)
 - Vanilla front end with channel tabs, copy-to-clipboard, and a live iframe preview
 - Built-in `node:test` for normalisation, fallback content, escaping, and JSON parsing
-- Optional Anthropic API integration with a deterministic fallback
+- Optional Gemini API integration with a deterministic fallback
 
 ## Responsible use
 

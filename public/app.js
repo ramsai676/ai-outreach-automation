@@ -13,8 +13,8 @@ async function checkMode() {
   try {
     const data = await (await fetch('/api/health')).json();
     els.mode.textContent = data.llm === 'enabled'
-      ? '✨ AI generation enabled (Claude) — content is tailored per business.'
-      : 'Running in template mode. Add ANTHROPIC_API_KEY for fully AI-tailored copy.';
+      ? '✨ AI generation enabled (Gemini) - content is tailored per business.'
+      : 'Running in template mode. Add GEMINI_API_KEY for fully AI-tailored copy.';
   } catch { /* ignore */ }
 }
 

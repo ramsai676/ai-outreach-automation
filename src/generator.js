@@ -5,20 +5,20 @@
 // always-valid and on-brand regardless of model output, and lets the whole
 // thing degrade to a deterministic template when no API key is present.
 
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenAI } from '@google/genai';
 
-const MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 let client = null;
 function getClient() {
   if (client) return client;
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return null;
-  client = new Anthropic({ apiKey });
+  client = new GoogleGenAI({ apiKey });
   return client;
 }
 export function llmAvailable() {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+  return Boolean(process.env.GEMINI_API_KEY);
 }
 
 const TONES = {
@@ -54,7 +54,7 @@ function servicesFor(category) {
   const key = Object.keys(CATEGORY_SERVICES).find((k) => category.toLowerCase().includes(k));
   return (CATEGORY_SERVICES[key] || CATEGORY_SERVICES.default).map((title) => ({
     title,
-    desc: `${title} — done for you, designed to win more customers.`,
+    desc: `${title}, done for you and designed to win more customers.`,
   }));
 }
 
@@ -63,13 +63,13 @@ export function fallbackContent(profile) {
   const p = profile;
   const where = p.city ? ` in ${p.city}` : '';
   return {
-    tagline: `${p.businessName} — ${capitalize(p.category)} done right`,
-    about: `${p.businessName} is a trusted ${p.category}${where}. We make it effortless for customers to find you, learn what you offer, and get in touch — all from a clean, mobile-friendly website.`,
+    tagline: `${p.businessName}: ${capitalize(p.category)} done right`,
+    about: `${p.businessName} is a trusted ${p.category}${where}. We make it effortless for customers to find you, learn what you offer, and get in touch, all from a clean, mobile-friendly website.`,
     services: servicesFor(p.category),
     outreach: {
-      email: `Subject: A quick idea for ${p.businessName}\n\nHi ${p.businessName} team,\n\nI came across your ${p.category}${where} and loved what you do. I noticed there's a chance to reach a lot more customers online with ${p.offer} — something simple, modern, and mobile-friendly that turns searches into walk-ins and calls.\n\nI'd be happy to show you a free mock-up of what it could look like, no obligation. Would a quick 10-minute chat this week work?\n\nWarm regards,\n${p.senderName}`,
-      whatsapp: `Hi! 👋 I came across ${p.businessName}${where} and really like what you do. I help ${p.category}s get more customers with ${p.offer}. I've even put together a free sample of what your site could look like — can I send it over? 😊`,
-      sms: `Hi ${p.businessName}! We help local ${p.category}s get more customers online with ${p.offer}. Free no-obligation mock-up ready — reply YES to see it. — ${p.senderName}`,
+      email: `Subject: A quick idea for ${p.businessName}\n\nHi ${p.businessName} team,\n\nI came across your ${p.category}${where} and loved what you do. I noticed there's a chance to reach a lot more customers online with ${p.offer}: something simple, modern, and mobile-friendly that turns searches into walk-ins and calls.\n\nI'd be happy to show you a free mock-up of what it could look like, no obligation. Would a quick 10-minute chat this week work?\n\nWarm regards,\n${p.senderName}`,
+      whatsapp: `Hi! 👋 I came across ${p.businessName}${where} and really like what you do. I help ${p.category}s get more customers with ${p.offer}. I've even put together a free sample of what your site could look like. Can I send it over? 😊`,
+      sms: `Hi ${p.businessName}! We help local ${p.category}s get more customers online with ${p.offer}. Free no-obligation mock-up ready, reply YES to see it. ${p.senderName}`,
     },
     source: 'fallback',
   };
@@ -120,13 +120,12 @@ export async function generateContent(rawProfile) {
   if (!c) return { profile, content: fallbackContent(profile) };
 
   try {
-    const resp = await c.messages.create({
+    const resp = await c.models.generateContent({
       model: MODEL,
-      max_tokens: 1200,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: buildUserPrompt(profile) }],
+      contents: buildUserPrompt(profile),
+      config: { systemInstruction: SYSTEM_PROMPT, maxOutputTokens: 1200 },
     });
-    const text = resp.content.filter((b) => b.type === 'text').map((b) => b.text).join('').trim();
+    const text = (resp.text || '').trim();
     const json = extractJson(text);
     if (validateContent(json)) {
       return { profile, content: { ...json, source: 'llm', model: MODEL } };

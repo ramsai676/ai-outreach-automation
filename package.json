@@ -1,7 +1,7 @@
 {
   "name": "ai-outreach-automation",
   "version": "1.0.0",
-  "description": "AI outreach automation: give it a business and it generates a tailored cold-outreach pitch (email + WhatsApp + SMS) AND a live, customized landing-page mockup. Claude generates structured content; a fixed template renders bulletproof HTML; full fallback without a key.",
+  "description": "AI outreach automation: give it a business and it generates a tailored cold-outreach pitch (email + WhatsApp + SMS) AND a live, customized landing-page mockup. Gemini generates structured content; a fixed template renders bulletproof HTML; full fallback without a key.",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -16,14 +16,14 @@
     "cold-email",
     "landing-page",
     "sales",
-    "claude",
+    "gemini",
     "llm",
     "copywriting"
   ],
   "author": "ramsai676",
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.1",
+    "@google/genai": "^2.7.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.2"
   },
