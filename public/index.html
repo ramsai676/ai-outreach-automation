@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PitchCraft — AI Outreach Automation</title>
+  <meta name="description" content="Enter a business and instantly generate a tailored cold-outreach pitch (email, WhatsApp, SMS) plus a live, customized landing-page mockup." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉️</text></svg>" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">✉️ <span>PitchCraft<b>AI</b></span></div>
+    <a class="gh-link" href="https://github.com" target="_blank" rel="noopener">View on GitHub →</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>From a business name to a ready-to-send pitch</h1>
+      <p>Enter a prospect's details. PitchCraft generates a tailored <strong>cold-outreach message</strong> for email, WhatsApp & SMS — plus a <strong>custom landing-page mockup</strong> you can show them. AI chained into a real sales workflow.</p>
+    </section>
+
+    <div class="layout">
+      <section class="form-card">
+        <h2>Prospect details</h2>
+        <form id="gen-form">
+          <label>Business name *<input id="businessName" required placeholder="e.g. Chai n Gupshup" /></label>
+          <label>Category<input id="category" placeholder="e.g. cafe, salon, dentist" /></label>
+          <label>City / area<input id="city" placeholder="e.g. Coimbatore" /></label>
+          <div class="row">
+            <label>Tone
+              <select id="tone">
+                <option value="friendly">Friendly</option>
+                <option value="professional">Professional</option>
+                <option value="bold">Bold</option>
+              </select>
+            </label>
+            <label>Your / agency name<input id="senderName" placeholder="e.g. Adroitec Digital" /></label>
+          </div>
+          <label>What you're offering<input id="offer" placeholder="e.g. a fast, modern website" /></label>
+          <button class="btn" id="gen-btn" type="submit"><span class="btn-label">Generate pitch + landing page</span><span class="spinner" hidden></span></button>
+        </form>
+        <p class="mode" id="mode"></p>
+      </section>
+
+      <section class="output" id="output" hidden>
+        <div class="tabs">
+          <button class="tab active" data-tab="email">📧 Email</button>
+          <button class="tab" data-tab="whatsapp">💬 WhatsApp</button>
+          <button class="tab" data-tab="sms">📱 SMS</button>
+        </div>
+        <div class="msg-box">
+          <pre id="msg-text"></pre>
+          <button class="copy-btn" id="copy-btn">Copy</button>
+        </div>
+
+        <div class="preview-head">
+          <h3>Landing-page mockup</h3>
+          <a id="open-tab" href="/preview" target="_blank" rel="noopener" class="open-link">Open full page ↗</a>
+        </div>
+        <div class="preview-frame">
+          <iframe id="preview" title="Landing page preview"></iframe>
+        </div>
+      </section>
+    </div>
+
+    <p class="error" id="error" hidden></p>
+  </main>
+
+  <footer>Built with Node, Express &amp; Claude · Structured-content generation → templated landing page</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

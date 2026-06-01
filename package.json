@@ -1,0 +1,21 @@
+{
+  "name": "ai-outreach-automation",
+  "version": "1.0.0",
+  "description": "AI outreach automation: give it a business and it generates a tailored cold-outreach pitch (email + WhatsApp + SMS) AND a live, customized landing-page mockup. Claude generates structured content; a fixed template renders bulletproof HTML; full fallback without a key.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "keywords": ["ai", "outreach", "automation", "cold-email", "landing-page", "sales", "claude", "llm", "copywriting"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  },
+  "engines": { "node": ">=18" }
+}
