@@ -1,95 +1,76 @@
-# ✉️ PitchCraftAI - AI Outreach Automation
+# PitchCraft
 
-> Enter a prospect's business → instantly get a **tailored cold-outreach pitch** (email + WhatsApp + SMS) **and** a **custom, ready-to-show landing-page mockup**. AI chained into a real sales workflow - not just a chatbot.
+A tool that takes a prospect's business details and produces a complete outreach package: a tailored cold-outreach message for email, WhatsApp, and SMS, plus a custom one-page landing-page mockup you can show them. It pairs naturally with a lead-generation tool, turning a discovered business into something you can pitch in one step.
 
-Pairs perfectly with a lead-gen tool: take a business you found, and in one click produce everything you need to pitch them.
-
-![status](https://img.shields.io/badge/status-production--ready-2ecc71)
-![node](https://img.shields.io/badge/node-%3E%3D18-7b6cff)
+![node](https://img.shields.io/badge/node-%3E%3D18-informational)
 ![license](https://img.shields.io/badge/license-MIT-blue)
+![tests](https://img.shields.io/badge/tests-8%20passing-success)
 
----
+## Overview
 
-## ✨ Why this project
+PitchCraft demonstrates chaining a content generator into a structured workflow with reliable output, rather than free-form chat. From a single input it produces three channel-specific messages and a full landing page.
 
-It demonstrates the skill recruiters actually want from "AI builders" - **chaining an LLM into a structured workflow with reliable output**, not just chatting:
+The generator returns structured data, and the landing page is rendered from a fixed, tested HTML template. This keeps the markup valid, escaped, and consistent regardless of the generated wording. It uses the Claude API when configured and falls back to a deterministic, category-aware template when no key is present, so it always produces output.
 
-- **Multi-output generation** - three channel-specific outreach messages *plus* a full landing page from a single input.
-- **Reliable rendering** - the LLM returns **structured JSON**, and the landing page is built from a **fixed, tested HTML template**. The markup is always valid, escaped, and on-brand regardless of what the model writes.
-- **Always works** - full **deterministic template fallback** with no API key, with category-aware copy and services.
-- **On-brand for a digital agency** - written exactly like the prospecting → demo workflow a web studio runs.
+## Screenshots
 
----
-
-## 🖥️ Demo
-
-`npm start` → <http://localhost:3004>. Enter e.g. **"Chai n Gupshup", cafe, Coimbatore**, choose a tone, and generate. You get:
-- 📧 **Email** / 💬 **WhatsApp** / 📱 **SMS** outreach (with copy buttons), and
-- a **live landing-page preview** in an iframe (open full page in a new tab).
-
-### Screenshots
-
-| Enter prospect details | Generated pitch + live landing page |
+| Enter prospect details | Generated pitch and landing page |
 | :---: | :---: |
 | ![Home screen](docs/01-home.png) | ![Outreach messages and landing-page preview](docs/02-result.png) |
 
----
-
-## 🧠 How it works
-
-```
-  business profile (name, category, city, tone, offer)
-        │
-        ▼
-  generateContent()  ──►  Claude returns STRUCTURED JSON
-        │                  { tagline, about, services[], outreach{email,whatsapp,sms} }
-        │                  (validated; falls back to a deterministic template)
-        ├──► outreach messages  → UI (email / whatsapp / sms tabs)
-        └──► renderLandingPage() → fixed HTML template → /preview (iframe + new tab)
-```
-
-Generating **content** (not raw HTML) with the model and rendering through a **fixed template** is the key reliability decision - see [`src/generator.js`](src/generator.js).
-
----
-
-## 🚀 Quick start
+## Getting started
 
 ```bash
-git clone https://github.com/<you>/ai-outreach-automation.git
+git clone https://github.com/ramsai676/ai-outreach-automation.git
 cd ai-outreach-automation
 npm install
-cp .env.example .env       # optional: add ANTHROPIC_API_KEY for tailored copy
-npm start                  # → http://localhost:3004
-npm test                   # 8 unit tests (no network)
+npm start
+# open http://localhost:3004
 ```
 
----
+Enter a business name, category, city, and tone, then generate. You get email, WhatsApp, and SMS drafts with copy buttons, and a live landing-page preview. To enable fully tailored copy, copy `.env.example` to `.env` and add an `ANTHROPIC_API_KEY`.
 
-## 🔌 API
+Run the tests:
 
-| Endpoint | Body / Params | Returns |
+```bash
+npm test
+```
+
+## API
+
+| Endpoint | Body or params | Returns |
 | --- | --- | --- |
-| `POST /api/generate` | `{ businessName, category, city, tone, senderName, offer }` | `{ tagline, about, services[], outreach{email,whatsapp,sms}, previewUrl }` |
-| `GET /preview` | - | The most recently generated landing page (HTML). |
-| `POST /api/landing-page` | same profile | Landing-page HTML directly. |
-| `GET /api/health` | - | `{ status, llm }`. |
+| `POST /api/generate` | `{ businessName, category, city, tone, senderName, offer }` | tagline, about, services, and the three outreach messages |
+| `GET /preview` | | The most recently generated landing page as HTML |
+| `POST /api/landing-page` | profile | Landing-page HTML directly |
+| `GET /api/health` | | Service status |
 
-Tones: `friendly`, `professional`, `bold`.
+Tones: friendly, professional, bold.
 
----
+## How it works
 
-## 🏗️ Tech stack
+```
+business profile
+   -> generate structured content { tagline, about, services, outreach }
+        (validated; deterministic template fallback)
+   -> outreach messages shown in the UI (email / whatsapp / sms tabs)
+   -> render landing page from a fixed HTML template -> /preview
+```
 
-- **Backend:** Node.js + Express
-- **AI:** Anthropic Claude (structured JSON generation) with deterministic fallback
-- **Rendering:** server-side HTML template (escaped, self-contained, Cormorant + Inter)
-- **Frontend:** vanilla JS - channel tabs, copy-to-clipboard, live iframe preview
-- **Tests:** `node:test` - profile normalisation, fallback content, HTML escaping, JSON extraction
+Generating structured content and rendering through a fixed template, rather than asking the model for raw HTML, is the key reliability decision. See `src/generator.js`.
 
-## ⚖️ Use responsibly
+## Tech stack
 
-Generated outreach is a starting draft - review before sending, personalise further, and follow anti-spam / consent rules for your region. Don't send unsolicited bulk messages.
+- Node.js and Express
+- Server-side HTML templating for the landing page (escaped and self-contained)
+- Vanilla front end with channel tabs, copy-to-clipboard, and a live iframe preview
+- Built-in `node:test` for normalisation, fallback content, escaping, and JSON parsing
+- Optional Anthropic API integration with a deterministic fallback
 
-## 📜 License
+## Responsible use
 
-MIT - see [LICENSE](LICENSE).
+Generated outreach is a first draft. Review and personalise it before sending, and follow anti-spam and consent rules for your region. Do not send unsolicited bulk messages.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
